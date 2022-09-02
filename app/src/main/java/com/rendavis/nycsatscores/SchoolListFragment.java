@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rendavis.nycsatscores.databinding.FragmentSchoolListBinding;
 import com.rendavis.nycsatscores.databinding.SchoolListContentBinding;
 import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
+import com.rendavis.nycsatscores.school.School;
 
 import java.util.List;
 
@@ -42,16 +43,16 @@ public class SchoolListFragment extends Fragment {
     ViewCompat.OnUnhandledKeyEventListenerCompat unhandledKeyEventListenerCompat = (v, event) -> {
         if (event.getKeyCode() == KeyEvent.KEYCODE_Z && event.isCtrlPressed()) {
             Toast.makeText(
-                    v.getContext(),
-                    "Undo (Ctrl + Z) shortcut triggered",
-                    Toast.LENGTH_LONG
+                v.getContext(),
+                "Undo (Ctrl + Z) shortcut triggered",
+                Toast.LENGTH_LONG
             ).show();
             return true;
         } else if (event.getKeyCode() == KeyEvent.KEYCODE_F && event.isCtrlPressed()) {
             Toast.makeText(
-                    v.getContext(),
-                    "Find (Ctrl + F) shortcut triggered",
-                    Toast.LENGTH_LONG
+                v.getContext(),
+                "Find (Ctrl + F) shortcut triggered",
+                Toast.LENGTH_LONG
             ).show();
             return true;
         }
@@ -61,7 +62,11 @@ public class SchoolListFragment extends Fragment {
     private FragmentSchoolListBinding binding;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         binding = FragmentSchoolListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -81,8 +86,8 @@ public class SchoolListFragment extends Fragment {
             RecyclerView recyclerView,
             View itemDetailFragmentContainer
     ) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(
-                PlaceholderContent.ITEMS,
+        recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
+                PlaceholderContent.SCHOOLS,
                 itemDetailFragmentContainer
         ));
     }
@@ -93,14 +98,16 @@ public class SchoolListFragment extends Fragment {
         binding = null;
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    public static class SchoolRecyclerViewAdapter
+            extends RecyclerView.Adapter<SchoolRecyclerViewAdapter.ViewHolder> {
 
-        private final List<PlaceholderContent.PlaceholderItem> mValues;
+        private final List<School> mValues;
         private final View mItemDetailFragmentContainer;
 
-        SimpleItemRecyclerViewAdapter(List<PlaceholderContent.PlaceholderItem> items,
-                                      View itemDetailFragmentContainer) {
+        SchoolRecyclerViewAdapter(
+                List<School> items,
+                View itemDetailFragmentContainer
+        ) {
             mValues = items;
             mItemDetailFragmentContainer = itemDetailFragmentContainer;
         }
@@ -115,20 +122,20 @@ public class SchoolListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.schoolNameText.setText(mValues.get(position).getName());
+            holder.contentText.setText(mValues.get(position).getOverview());
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(itemView -> {
-                final PlaceholderContent.PlaceholderItem item =
-                        (PlaceholderContent.PlaceholderItem) itemView.getTag();
+                final School item = (School) itemView.getTag();
                 final Bundle arguments = new Bundle();
-                arguments.putString(SchoolDetailFragment.ARG_ITEM_ID, item.id);
+                arguments.putString(SchoolDetailFragment.ARG_ITEM_ID, item.getId());
                 if (mItemDetailFragmentContainer != null) {
                     Navigation.findNavController(mItemDetailFragmentContainer)
                             .navigate(R.id.fragment_item_detail, arguments);
                 } else {
-                    Navigation.findNavController(itemView).navigate(R.id.show_item_detail, arguments);
+                    Navigation.findNavController(itemView)
+                            .navigate(R.id.show_item_detail, arguments);
                 }
             });
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -138,11 +145,10 @@ public class SchoolListFragment extends Fragment {
                  * experience on larger screen devices
                  */
                 holder.itemView.setOnContextClickListener(v -> {
-                    final PlaceholderContent.PlaceholderItem item =
-                            (PlaceholderContent.PlaceholderItem) holder.itemView.getTag();
+                    final School item = (School) holder.itemView.getTag();
                     Toast.makeText(
                             holder.itemView.getContext(),
-                            "Context click of item " + item.id,
+                            "Context click of item " + item.getId(),
                             Toast.LENGTH_LONG
                     ).show();
                     return true;
@@ -151,9 +157,9 @@ public class SchoolListFragment extends Fragment {
             holder.itemView.setOnLongClickListener(v -> {
                 // Setting the item id as the clip data so that the drop target is able to
                 // identify the id of the content
-                final ClipData.Item clipItem = new ClipData.Item(mValues.get(position).id);
+                final ClipData.Item clipItem = new ClipData.Item(mValues.get(position).getId());
                 final ClipData dragData = new ClipData(
-                        ((PlaceholderContent.PlaceholderItem) v.getTag()).content,
+                        ((School) v.getTag()).getOverview(),
                         new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN},
                         clipItem
                 );
@@ -183,13 +189,13 @@ public class SchoolListFragment extends Fragment {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+            final TextView schoolNameText;
+            final TextView contentText;
 
             ViewHolder(SchoolListContentBinding binding) {
                 super(binding.getRoot());
-                mIdView = binding.schoolName;
-                mContentView = binding.content;
+                schoolNameText = binding.schoolName;
+                contentText = binding.content;
             }
         }
     }

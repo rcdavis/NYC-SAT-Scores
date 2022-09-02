@@ -6,14 +6,13 @@ import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
 import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
+import com.rendavis.nycsatscores.school.School;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -32,14 +31,12 @@ public class SchoolDetailFragment extends Fragment {
     /**
      * The placeholder content this fragment is presenting.
      */
-    private PlaceholderContent.PlaceholderItem mItem;
-    private CollapsingToolbarLayout mToolbarLayout;
-    private TextView mTextView;
+    private School mItem;
 
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             final ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
-            mItem = PlaceholderContent.ITEM_MAP.get(clipDataItem.getText().toString());
+            mItem = PlaceholderContent.SCHOOL_MAP.get(clipDataItem.getText().toString());
             updateContent();
         }
         return true;
@@ -63,19 +60,18 @@ public class SchoolDetailFragment extends Fragment {
             // Load the placeholder content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = PlaceholderContent.ITEM_MAP.get(args.getString(ARG_ITEM_ID));
+            mItem = PlaceholderContent.SCHOOL_MAP.get(args.getString(ARG_ITEM_ID));
         }
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState
+    public View onCreateView(
+        @NonNull LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState
     ) {
         binding = FragmentSchoolDetailBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
-
-        mToolbarLayout = rootView.findViewById(R.id.toolbar_layout);
-        mTextView = binding.itemDetail;
 
         // Show the placeholder content as text in a TextView & in the toolbar if available.
         updateContent();
@@ -91,9 +87,9 @@ public class SchoolDetailFragment extends Fragment {
 
     private void updateContent() {
         if (mItem != null) {
-            mTextView.setText(mItem.details);
-            if (mToolbarLayout != null) {
-                mToolbarLayout.setTitle(mItem.content);
+            binding.itemDetail.setText(mItem.getOverview());
+            if (binding.toolbarLayout != null) {
+                binding.toolbarLayout.setTitle(mItem.getName());
             }
         }
     }

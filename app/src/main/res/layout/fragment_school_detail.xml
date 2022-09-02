@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -50,7 +50,8 @@
             android:paddingEnd="@dimen/container_horizontal_margin"
             android:paddingBottom="16dp"
             android:textIsSelectable="true"
-            tools:context="com.rendavis.nycsatscores.SchoolDetailFragment" />
+            tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+            tools:text="NYC School Details"/>
 
     </androidx.core.widget.NestedScrollView>
 
