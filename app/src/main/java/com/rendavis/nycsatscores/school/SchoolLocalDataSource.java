@@ -50,7 +50,14 @@ public class SchoolLocalDataSource {
         return Observable.just(mSchools);
     }
 
-    private void addSchool(School school) {
+    public void setSchools(final List<School> schools) {
+        mSchools.clear();
+        mSchoolMap.clear();
+        for (final School school : schools)
+            addSchool(school);
+    }
+
+    private void addSchool(final School school) {
         mSchools.add(school);
         mSchoolMap.put(school.getId(), school);
     }

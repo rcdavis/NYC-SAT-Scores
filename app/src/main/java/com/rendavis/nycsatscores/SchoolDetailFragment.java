@@ -68,7 +68,7 @@ public class SchoolDetailFragment extends Fragment {
 
         rootView.setOnDragListener(dragListener);
 
-        getAllSchools();
+        getSelectedSchool();
 
         return rootView;
     }
@@ -88,7 +88,7 @@ public class SchoolDetailFragment extends Fragment {
         }
     }
 
-    private void getAllSchools() {
+    private void getSelectedSchool() {
         final Bundle args = getArguments();
         if (args != null && args.containsKey(ARG_ITEM_ID)) {
             mDisposables.add(PlaceholderContent.SCHOOL_REPO

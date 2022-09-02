@@ -87,8 +87,8 @@ public class SchoolListFragment extends Fragment {
     }
 
     private void setupRecyclerView(
-        RecyclerView recyclerView,
-        View itemDetailFragmentContainer
+        final RecyclerView recyclerView,
+        final View itemDetailFragmentContainer
     ) {
         mDisposables.add(PlaceholderContent.SCHOOL_REPO.getAllSchools()
                 .subscribe(schools -> {
@@ -97,11 +97,6 @@ public class SchoolListFragment extends Fragment {
                         itemDetailFragmentContainer
                     ));
                 }));
-
-        /*recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
-            PlaceholderContent.SCHOOL_REPO.getAllSchools(),
-            itemDetailFragmentContainer
-        ));*/
     }
 
     @Override
@@ -139,6 +134,7 @@ public class SchoolListFragment extends Fragment {
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(itemView -> {
                 final School item = (School) itemView.getTag();
+                PlaceholderContent.SCHOOL_REPO.selectSchool(item);
                 final Bundle arguments = new Bundle();
                 arguments.putString(SchoolDetailFragment.ARG_ITEM_ID, item.getId());
                 if (mItemDetailFragmentContainer != null) {
