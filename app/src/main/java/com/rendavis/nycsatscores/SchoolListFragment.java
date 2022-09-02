@@ -4,13 +4,6 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +11,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rendavis.nycsatscores.databinding.FragmentSchoolListBinding;
-import com.rendavis.nycsatscores.databinding.ItemListContentBinding;
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.rendavis.nycsatscores.databinding.FragmentSchoolListBinding;
+import com.rendavis.nycsatscores.databinding.SchoolListContentBinding;
 import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
 
 import java.util.List;
@@ -29,7 +27,7 @@ import java.util.List;
  * A fragment representing a list of Items. This fragment
  * has different presentations for handset and larger screen devices. On
  * handsets, the fragment presents a list of items, which when touched,
- * lead to a {@link ItemDetailFragment} representing
+ * lead to a {@link SchoolDetailFragment} representing
  * item details. On larger screens, the Navigation controller presents the list of items and
  * item details side-by-side using two vertical panes.
  */
@@ -110,10 +108,9 @@ public class SchoolListFragment extends Fragment {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final ItemListContentBinding binding = ItemListContentBinding
+            final SchoolListContentBinding binding = SchoolListContentBinding
                     .inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new ViewHolder(binding);
-
         }
 
         @Override
@@ -126,7 +123,7 @@ public class SchoolListFragment extends Fragment {
                 final PlaceholderContent.PlaceholderItem item =
                         (PlaceholderContent.PlaceholderItem) itemView.getTag();
                 final Bundle arguments = new Bundle();
-                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                arguments.putString(SchoolDetailFragment.ARG_ITEM_ID, item.id);
                 if (mItemDetailFragmentContainer != null) {
                     Navigation.findNavController(mItemDetailFragmentContainer)
                             .navigate(R.id.fragment_item_detail, arguments);
@@ -189,12 +186,11 @@ public class SchoolListFragment extends Fragment {
             final TextView mIdView;
             final TextView mContentView;
 
-            ViewHolder(ItemListContentBinding binding) {
+            ViewHolder(SchoolListContentBinding binding) {
                 super(binding.getRoot());
-                mIdView = binding.idText;
+                mIdView = binding.schoolName;
                 mContentView = binding.content;
             }
-
         }
     }
 }

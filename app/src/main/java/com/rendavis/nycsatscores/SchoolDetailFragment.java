@@ -3,18 +3,17 @@ package com.rendavis.nycsatscores;
 import android.content.ClipData;
 import android.os.Bundle;
 import android.view.DragEvent;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
 import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
-import com.rendavis.nycsatscores.databinding.FragmentItemDetailBinding;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -22,7 +21,7 @@ import com.rendavis.nycsatscores.databinding.FragmentItemDetailBinding;
  * in two-pane mode (on larger screen devices) or self-contained
  * on handsets.
  */
-public class ItemDetailFragment extends Fragment {
+public class SchoolDetailFragment extends Fragment {
 
     /**
      * The fragment argument representing the item ID that this fragment
@@ -46,13 +45,13 @@ public class ItemDetailFragment extends Fragment {
         return true;
     };
 
-    private FragmentItemDetailBinding binding;
+    private FragmentSchoolDetailBinding binding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemDetailFragment() {
+    public SchoolDetailFragment() {
     }
 
     @Override
@@ -72,7 +71,7 @@ public class ItemDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState
     ) {
-        binding = FragmentItemDetailBinding.inflate(inflater, container, false);
+        binding = FragmentSchoolDetailBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
         mToolbarLayout = rootView.findViewById(R.id.toolbar_layout);

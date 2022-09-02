@@ -13,6 +13,6 @@
         android:layout_height="match_parent"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context="com.rendavis.nycsatscores.ItemDetailFragment" />
+        tools:context="com.rendavis.nycsatscores.SchoolDetailFragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

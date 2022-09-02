@@ -9,7 +9,8 @@
     <fragment
         android:id="@+id/school_list_fragment"
         android:name="com.rendavis.nycsatscores.SchoolListFragment"
-        android:label="@string/title_school_list">
+        android:label="@string/title_school_list"
+        tools:layout="@layout/fragment_school_list">
         <action
             android:id="@+id/show_item_detail"
             app:destination="@id/item_detail_fragment" />
@@ -17,9 +18,9 @@
 
     <fragment
         android:id="@+id/item_detail_fragment"
-        android:name="com.rendavis.nycsatscores.ItemDetailFragment"
+        android:name="com.rendavis.nycsatscores.SchoolDetailFragment"
         android:label="@string/title_school_detail"
-        tools:layout="@layout/fragment_item_detail">
+        tools:layout="@layout/fragment_school_detail">
         <argument
             android:name="item_id"
             android:defaultValue=""
