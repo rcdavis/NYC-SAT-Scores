@@ -34,6 +34,8 @@ import java.util.List;
  */
 public class SchoolListFragment extends Fragment {
 
+    private FragmentSchoolListBinding binding;
+
     /**
      * Method to intercept global key events in the
      * item list fragment to trigger keyboard shortcuts
@@ -59,13 +61,11 @@ public class SchoolListFragment extends Fragment {
         return false;
     };
 
-    private FragmentSchoolListBinding binding;
-
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState
+        @NonNull LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState
     ) {
         binding = FragmentSchoolListBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -83,12 +83,12 @@ public class SchoolListFragment extends Fragment {
     }
 
     private void setupRecyclerView(
-            RecyclerView recyclerView,
-            View itemDetailFragmentContainer
+        RecyclerView recyclerView,
+        View itemDetailFragmentContainer
     ) {
         recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
-                PlaceholderContent.SCHOOLS,
-                itemDetailFragmentContainer
+            PlaceholderContent.SCHOOLS,
+            itemDetailFragmentContainer
         ));
     }
 
@@ -105,8 +105,8 @@ public class SchoolListFragment extends Fragment {
         private final View mItemDetailFragmentContainer;
 
         SchoolRecyclerViewAdapter(
-                List<School> items,
-                View itemDetailFragmentContainer
+            List<School> items,
+            View itemDetailFragmentContainer
         ) {
             mValues = items;
             mItemDetailFragmentContainer = itemDetailFragmentContainer;
@@ -122,7 +122,6 @@ public class SchoolListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.schoolIdText.setText(mValues.get(position).getId());
             holder.schoolNameText.setText(mValues.get(position).getName());
 
             holder.itemView.setTag(mValues.get(position));
@@ -189,12 +188,10 @@ public class SchoolListFragment extends Fragment {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView schoolIdText;
             final TextView schoolNameText;
 
             ViewHolder(SchoolListContentBinding binding) {
                 super(binding.getRoot());
-                schoolIdText = binding.schoolId;
                 schoolNameText = binding.schoolName;
             }
         }
