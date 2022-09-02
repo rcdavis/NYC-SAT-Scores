@@ -20,19 +20,23 @@ public class ItemDetailHostActivity extends AppCompatActivity {
         ActivityItemDetailBinding binding = ActivityItemDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+        final NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_item_detail);
-        NavController navController = navHostFragment.getNavController();
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.
-                Builder(navController.getGraph())
-                .build();
+        if (navHostFragment != null) {
+            final NavController navController = navHostFragment.getNavController();
+            final AppBarConfiguration appBarConfiguration = new AppBarConfiguration.
+                    Builder(navController.getGraph())
+                    .build();
 
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+            NavigationUI.setupActionBarWithNavController(
+                    this, navController, appBarConfiguration);
+        }
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_item_detail);
+        final NavController navController = Navigation
+                .findNavController(this, R.id.nav_host_fragment_item_detail);
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 }
