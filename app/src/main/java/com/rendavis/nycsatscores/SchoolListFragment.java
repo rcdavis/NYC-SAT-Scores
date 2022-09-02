@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rendavis.nycsatscores.databinding.FragmentItemListBinding;
+import com.rendavis.nycsatscores.databinding.FragmentSchoolListBinding;
 import com.rendavis.nycsatscores.databinding.ItemListContentBinding;
 
 import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
@@ -33,7 +33,7 @@ import java.util.List;
  * item details. On larger screens, the Navigation controller presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ItemListFragment extends Fragment {
+public class SchoolListFragment extends Fragment {
 
     /**
      * Method to intercept global key events in the
@@ -60,11 +60,11 @@ public class ItemListFragment extends Fragment {
         return false;
     };
 
-    private FragmentItemListBinding binding;
+    private FragmentSchoolListBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentItemListBinding.inflate(inflater, container, false);
+        binding = FragmentSchoolListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

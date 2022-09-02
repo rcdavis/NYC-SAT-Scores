@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NYC SAT Scores</string>
     <string name="title_item_detail">Item Detail</string>
+
+    <string name="title_school_list">NYC Schools</string>
+    <string name="title_school_detail">School Details</string>
 </resources>

@@ -4,12 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/item_list_fragment">
+    app:startDestination="@id/school_list_fragment">
 
     <fragment
-        android:id="@+id/item_list_fragment"
-        android:name="com.rendavis.nycsatscores.ItemListFragment"
-        android:label="ItemListFragment">
+        android:id="@+id/school_list_fragment"
+        android:name="com.rendavis.nycsatscores.SchoolListFragment"
+        android:label="@string/title_school_list">
         <action
             android:id="@+id/show_item_detail"
             app:destination="@id/item_detail_fragment" />
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/item_detail_fragment"
         android:name="com.rendavis.nycsatscores.ItemDetailFragment"
-        android:label="item_detail"
+        android:label="@string/title_school_detail"
         tools:layout="@layout/fragment_item_detail">
         <argument
             android:name="item_id"
