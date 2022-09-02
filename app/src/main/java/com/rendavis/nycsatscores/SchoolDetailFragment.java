@@ -14,6 +14,8 @@ import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
 import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
 import com.rendavis.nycsatscores.school.School;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 /**
  * A fragment representing a single Item detail screen.
  * This fragment is either contained in a {@link SchoolListFragment}
@@ -28,21 +30,25 @@ public class SchoolDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
 
-    /**
-     * The placeholder content this fragment is presenting.
-     */
+    private FragmentSchoolDetailBinding binding;
+
     private School mItem;
+
+    private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             final ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
-            mItem = PlaceholderContent.SCHOOL_REPO.getSchool(clipDataItem.getText().toString());
-            updateContent();
+
+            mDisposables.add(PlaceholderContent.SCHOOL_REPO
+                    .getSchool(clipDataItem.getText().toString())
+                    .subscribe(school -> {
+                        mItem = school;
+                        updateContent();
+                    }));
         }
         return true;
     };
-
-    private FragmentSchoolDetailBinding binding;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,30 +58,18 @@ public class SchoolDetailFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        final Bundle args = getArguments();
-        if (args != null && args.containsKey(ARG_ITEM_ID)) {
-            // Load the placeholder content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = PlaceholderContent.SCHOOL_REPO.getSchool(args.getString(ARG_ITEM_ID));
-        }
-    }
-
-    @Override
     public View onCreateView(
         @NonNull LayoutInflater inflater,
         ViewGroup container,
         Bundle savedInstanceState
     ) {
         binding = FragmentSchoolDetailBinding.inflate(inflater, container, false);
-        View rootView = binding.getRoot();
+        final View rootView = binding.getRoot();
 
-        // Show the placeholder content as text in a TextView & in the toolbar if available.
-        updateContent();
         rootView.setOnDragListener(dragListener);
+
+        getAllSchools();
+
         return rootView;
     }
 
@@ -91,6 +85,18 @@ public class SchoolDetailFragment extends Fragment {
             if (binding.toolbarLayout != null) {
                 binding.toolbarLayout.setTitle(mItem.getName());
             }
+        }
+    }
+
+    private void getAllSchools() {
+        final Bundle args = getArguments();
+        if (args != null && args.containsKey(ARG_ITEM_ID)) {
+            mDisposables.add(PlaceholderContent.SCHOOL_REPO
+                    .getSchool(args.getString(ARG_ITEM_ID))
+                    .subscribe(school -> {
+                        mItem = school;
+                        updateContent();
+                    }));
         }
     }
 }

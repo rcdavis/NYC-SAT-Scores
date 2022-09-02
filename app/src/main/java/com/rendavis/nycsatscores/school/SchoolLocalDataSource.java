@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+
 public class SchoolLocalDataSource {
     private final List<School> mSchools = new ArrayList<>();
     private final Map<String, School> mSchoolMap = new HashMap<>();
@@ -36,12 +38,16 @@ public class SchoolLocalDataSource {
         ));
     }
 
-    public School getSchool(final String id) {
-        return mSchoolMap.get(id);
+    public Observable<School> getSchool(final String id) {
+        final School school = mSchoolMap.get(id);
+        if (school == null)
+            return Observable.empty();
+
+        return Observable.just(school);
     }
 
-    public List<School> getAllSchools() {
-        return mSchools;
+    public Observable<List<School>> getAllSchools() {
+        return Observable.just(mSchools);
     }
 
     private void addSchool(School school) {

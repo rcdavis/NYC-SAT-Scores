@@ -2,14 +2,16 @@ package com.rendavis.nycsatscores.school;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+
 public class SchoolRepository {
     private final SchoolLocalDataSource mLocalDataSource = new SchoolLocalDataSource();
 
-    public School getSchool(final String id) {
+    public Observable<School> getSchool(final String id) {
         return mLocalDataSource.getSchool(id);
     }
 
-    public List<School> getAllSchools() {
+    public Observable<List<School>> getAllSchools() {
         return mLocalDataSource.getAllSchools();
     }
 }

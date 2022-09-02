@@ -24,6 +24,8 @@ import com.rendavis.nycsatscores.school.School;
 
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 /**
  * A fragment representing a list of Items. This fragment
  * has different presentations for handset and larger screen devices. On
@@ -35,6 +37,8 @@ import java.util.List;
 public class SchoolListFragment extends Fragment {
 
     private FragmentSchoolListBinding binding;
+
+    private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     /**
      * Method to intercept global key events in the
@@ -86,10 +90,18 @@ public class SchoolListFragment extends Fragment {
         RecyclerView recyclerView,
         View itemDetailFragmentContainer
     ) {
-        recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
+        mDisposables.add(PlaceholderContent.SCHOOL_REPO.getAllSchools()
+                .subscribe(schools -> {
+                    recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
+                        schools,
+                        itemDetailFragmentContainer
+                    ));
+                }));
+
+        /*recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
             PlaceholderContent.SCHOOL_REPO.getAllSchools(),
             itemDetailFragmentContainer
-        ));
+        ));*/
     }
 
     @Override
