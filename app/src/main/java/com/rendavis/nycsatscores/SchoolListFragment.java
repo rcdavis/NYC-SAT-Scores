@@ -122,8 +122,8 @@ public class SchoolListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+            holder.schoolIdText.setText(mValues.get(position).getId());
             holder.schoolNameText.setText(mValues.get(position).getName());
-            holder.contentText.setText(mValues.get(position).getOverview());
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(itemView -> {
@@ -189,13 +189,13 @@ public class SchoolListFragment extends Fragment {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
+            final TextView schoolIdText;
             final TextView schoolNameText;
-            final TextView contentText;
 
             ViewHolder(SchoolListContentBinding binding) {
                 super(binding.getRoot());
+                schoolIdText = binding.schoolId;
                 schoolNameText = binding.schoolName;
-                contentText = binding.content;
             }
         }
     }

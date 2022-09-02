@@ -7,19 +7,19 @@
     android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/school_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        tools:text="02M260" />
+
+    <TextView
         android:id="@+id/school_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="School" />
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Content" />
+        tools:text="Clinton School Writers And Artists, M.S. 260" />
 
 </LinearLayout>
