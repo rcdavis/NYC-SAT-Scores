@@ -87,7 +87,7 @@ public class SchoolListFragment extends Fragment {
         View itemDetailFragmentContainer
     ) {
         recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
-            PlaceholderContent.SCHOOLS,
+            PlaceholderContent.SCHOOL_REPO.getAllSchools(),
             itemDetailFragmentContainer
         ));
     }

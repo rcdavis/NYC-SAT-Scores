@@ -4,22 +4,22 @@ import com.google.gson.annotations.SerializedName;
 
 public class School {
     @SerializedName("dbn")
-    final private String id;
+    private final String id;
 
     @SerializedName("school_name")
-    final private String name;
+    private final String name;
 
     @SerializedName("overview_paragraph")
-    final private String overview;
+    private final String overview;
 
     @SerializedName("location")
-    final private String address;
+    private final String address;
 
     @SerializedName("phone_number")
-    final private String phoneNumber;
+    private final String phoneNumber;
 
     @SerializedName("website")
-    final private String websiteUrl;
+    private final String websiteUrl;
 
     public School(
         String id, String name, String overview, String address,

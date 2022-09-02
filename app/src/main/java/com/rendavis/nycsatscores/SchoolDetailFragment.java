@@ -36,7 +36,7 @@ public class SchoolDetailFragment extends Fragment {
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             final ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
-            mItem = PlaceholderContent.SCHOOL_MAP.get(clipDataItem.getText().toString());
+            mItem = PlaceholderContent.SCHOOL_REPO.getSchool(clipDataItem.getText().toString());
             updateContent();
         }
         return true;
@@ -60,7 +60,7 @@ public class SchoolDetailFragment extends Fragment {
             // Load the placeholder content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = PlaceholderContent.SCHOOL_MAP.get(args.getString(ARG_ITEM_ID));
+            mItem = PlaceholderContent.SCHOOL_REPO.getSchool(args.getString(ARG_ITEM_ID));
         }
     }
 
