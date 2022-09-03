@@ -6,13 +6,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/item_detail"
-        style="?android:attr/textAppearanceLarge"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        android:textIsSelectable="true"
-        tools:context="com.rendavis.nycsatscores.SchoolDetailFragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/phone_number"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/container_horizontal_margin"
+            android:paddingTop="16dp"
+            android:paddingEnd="@dimen/container_horizontal_margin"
+            android:paddingBottom="16dp"
+            android:textIsSelectable="true"
+            tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+            tools:text="(123) 456-7890"/>
+
+        <TextView
+            android:id="@+id/item_detail"
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/container_horizontal_margin"
+            android:paddingTop="16dp"
+            android:paddingEnd="@dimen/container_horizontal_margin"
+            android:paddingBottom="16dp"
+            android:textIsSelectable="true"
+            tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+            tools:text="NYC School Details"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

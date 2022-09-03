@@ -1,14 +1,12 @@
 package com.rendavis.nycsatscores;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rendavis.nycsatscores.databinding.FragmentSchoolListBinding;
@@ -23,30 +21,6 @@ import com.rendavis.nycsatscores.school.School;
  * item details side-by-side using two vertical panes.
  */
 public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSchoolListBinding> {
-    /**
-     * Method to intercept global key events in the
-     * item list fragment to trigger keyboard shortcuts
-     * Currently provides a toast when Ctrl + Z and Ctrl + F
-     * are triggered
-     */
-    ViewCompat.OnUnhandledKeyEventListenerCompat unhandledKeyEventListenerCompat = (v, event) -> {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_Z && event.isCtrlPressed()) {
-            Toast.makeText(
-                v.getContext(),
-                "Undo (Ctrl + Z) shortcut triggered",
-                Toast.LENGTH_LONG
-            ).show();
-            return true;
-        } else if (event.getKeyCode() == KeyEvent.KEYCODE_F && event.isCtrlPressed()) {
-            Toast.makeText(
-                v.getContext(),
-                "Find (Ctrl + F) shortcut triggered",
-                Toast.LENGTH_LONG
-            ).show();
-            return true;
-        }
-        return false;
-    };
 
     @Override
     Class<SchoolViewModel> getViewModelClass() {
@@ -62,26 +36,24 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ViewCompat.addOnUnhandledKeyEventListener(view, unhandledKeyEventListenerCompat);
-
-        // Leaving this not using view binding as it relies on if the view is visible the current
-        // layout configuration (layout, layout-sw600dp)
-        setupRecyclerView(binding.itemList, view.findViewById(R.id.item_detail_nav_container));
+        setupRecyclerView(binding.itemList);
     }
 
-    private void setupRecyclerView(
-        final RecyclerView recyclerView,
-        final View itemDetailFragmentContainer
-    ) {
+    private void setupRecyclerView(final RecyclerView recyclerView) {
         addDisposable(viewModel.getAllSchools()
                 .subscribe(schools -> recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
                     schools,
-                    itemDetailFragmentContainer,
                     this::onClickView
                 ))));
     }
 
     private void onClickView(final View view, final School school) {
         viewModel.updateSelectedSchool(school);
+        if (binding.itemDetailNavContainer != null) {
+            Navigation.findNavController(binding.itemDetailNavContainer)
+                    .navigate(R.id.fragment_item_detail);
+        } else {
+            Navigation.findNavController(view).navigate(R.id.show_item_detail);
+        }
     }
 }

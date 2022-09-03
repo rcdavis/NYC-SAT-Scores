@@ -11,10 +11,6 @@
         android:name="com.rendavis.nycsatscores.SchoolDetailFragment"
         android:label="@string/title_item_detail"
         tools:layout="@layout/fragment_school_detail">
-        <argument
-            android:name="item_id"
-            android:defaultValue=""
-            app:argType="string" />
     </fragment>
 
 </navigation>
