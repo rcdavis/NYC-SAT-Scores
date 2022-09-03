@@ -20,7 +20,8 @@ public class SchoolRepository {
         if (mSelectedSchool != null && mSelectedSchool.getId().equals(id))
             return Observable.just(mSelectedSchool);
 
-        return mLocalDataSource.getSchool(id);
+        return mLocalDataSource.getSchool(id)
+                .onErrorResumeNext(schoolApi.getSchool(id).map(School::from));
     }
 
     public Observable<List<School>> getAllSchools() {

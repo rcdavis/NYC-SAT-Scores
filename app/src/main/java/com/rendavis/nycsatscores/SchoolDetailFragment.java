@@ -82,9 +82,10 @@ public class SchoolDetailFragment extends Fragment {
     private void updateContent() {
         if (mItem != null) {
             binding.itemDetail.setText(mItem.getOverview());
-            if (binding.toolbarLayout != null) {
+            if (binding.phoneNumber != null)
+                binding.phoneNumber.setText(mItem.getPhoneNumberString());
+            if (binding.toolbarLayout != null)
                 binding.toolbarLayout.setTitle(mItem.getName());
-            }
         }
     }
 
