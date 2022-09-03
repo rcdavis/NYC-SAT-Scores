@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +23,6 @@ import com.rendavis.nycsatscores.school.School;
 
 import java.util.List;
 
-import io.reactivex.disposables.CompositeDisposable;
-
 /**
  * A fragment representing a list of Items. This fragment
  * has different presentations for handset and larger screen devices. On
@@ -34,12 +31,7 @@ import io.reactivex.disposables.CompositeDisposable;
  * item details. On larger screens, the Navigation controller presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class SchoolListFragment extends Fragment {
-
-    private FragmentSchoolListBinding binding;
-
-    private final CompositeDisposable mDisposables = new CompositeDisposable();
-
+public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSchoolListBinding> {
     /**
      * Method to intercept global key events in the
      * item list fragment to trigger keyboard shortcuts
@@ -66,13 +58,13 @@ public class SchoolListFragment extends Fragment {
     };
 
     @Override
-    public View onCreateView(
-        @NonNull LayoutInflater inflater,
-        ViewGroup container,
-        Bundle savedInstanceState
-    ) {
-        binding = FragmentSchoolListBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    Class<SchoolViewModel> getViewModelClass() {
+        return SchoolViewModel.class;
+    }
+
+    @Override
+    FragmentSchoolListBinding getBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
+        return FragmentSchoolListBinding.inflate(inflater, container, false);
     }
 
     @Override
@@ -90,19 +82,11 @@ public class SchoolListFragment extends Fragment {
         final RecyclerView recyclerView,
         final View itemDetailFragmentContainer
     ) {
-        mDisposables.add(PlaceholderContent.SCHOOL_REPO.getAllSchools()
-                .subscribe(schools -> {
-                    recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
-                        schools,
-                        itemDetailFragmentContainer
-                    ));
-                }));
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+        addDisposable(viewModel.getAllSchools()
+                .subscribe(schools -> recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
+                    schools,
+                    itemDetailFragmentContainer
+                ))));
     }
 
     public static class SchoolRecyclerViewAdapter

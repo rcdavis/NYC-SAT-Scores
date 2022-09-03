@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
 import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
@@ -22,26 +23,21 @@ import io.reactivex.disposables.CompositeDisposable;
  * in two-pane mode (on larger screen devices) or self-contained
  * on handsets.
  */
-public class SchoolDetailFragment extends Fragment {
-
+public class SchoolDetailFragment
+        extends BaseFragment<SchoolViewModel, FragmentSchoolDetailBinding> {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
 
-    private FragmentSchoolDetailBinding binding;
-
     private School mItem;
-
-    private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             final ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
 
-            mDisposables.add(PlaceholderContent.SCHOOL_REPO
-                    .getSchool(clipDataItem.getText().toString())
+            addDisposable(viewModel.getSchool(clipDataItem.getText().toString())
                     .subscribe(school -> {
                         mItem = school;
                         updateContent();
@@ -63,10 +59,9 @@ public class SchoolDetailFragment extends Fragment {
         ViewGroup container,
         Bundle savedInstanceState
     ) {
-        binding = FragmentSchoolDetailBinding.inflate(inflater, container, false);
-        final View rootView = binding.getRoot();
-
-        rootView.setOnDragListener(dragListener);
+        final View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        if (rootView != null)
+            rootView.setOnDragListener(dragListener);
 
         getSelectedSchool();
 
@@ -74,9 +69,13 @@ public class SchoolDetailFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    Class<SchoolViewModel> getViewModelClass() {
+        return SchoolViewModel.class;
+    }
+
+    @Override
+    FragmentSchoolDetailBinding getBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
+        return FragmentSchoolDetailBinding.inflate(inflater, container, false);
     }
 
     private void updateContent() {
@@ -92,8 +91,7 @@ public class SchoolDetailFragment extends Fragment {
     private void getSelectedSchool() {
         final Bundle args = getArguments();
         if (args != null && args.containsKey(ARG_ITEM_ID)) {
-            mDisposables.add(PlaceholderContent.SCHOOL_REPO
-                    .getSchool(args.getString(ARG_ITEM_ID))
+            addDisposable(viewModel.getSchool(args.getString(ARG_ITEM_ID))
                     .subscribe(school -> {
                         mItem = school;
                         updateContent();
