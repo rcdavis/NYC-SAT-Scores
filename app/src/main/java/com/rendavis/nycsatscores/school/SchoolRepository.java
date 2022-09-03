@@ -1,5 +1,7 @@
 package com.rendavis.nycsatscores.school;
 
+import android.util.Log;
+
 import com.rendavis.nycsatscores.BuildConfig;
 
 import java.util.List;
@@ -25,10 +27,25 @@ public class SchoolRepository {
     }
 
     public Observable<List<School>> getAllSchools() {
-        return schoolApi.getAllSchools()
+        return Observable.fromCallable(() -> {
+            final List<School> cachedSchools = mLocalDataSource.getAllSchools().blockingFirst();
+            if (!cachedSchools.isEmpty()) {
+                Log.d("Schools", "Returning cached schools...");
+                return cachedSchools;
+            }
+
+            final List<School> schools = schoolApi.getAllSchools().blockingFirst();
+            mLocalDataSource.setSchools(schools);
+            Log.d("Schools", "Returning web service schools...");
+            return schools;
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread());
+
+        /*return schoolApi.getAllSchools()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .onErrorResumeNext(mLocalDataSource.getAllSchools());
+                .onErrorResumeNext(mLocalDataSource.getAllSchools());*/
     }
 
     public void selectSchool(final School school) {
