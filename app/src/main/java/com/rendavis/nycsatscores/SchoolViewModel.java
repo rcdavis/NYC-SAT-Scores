@@ -10,10 +10,14 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public class SchoolViewModel extends ViewModel {
-    private School mSelectedSchool;
+    private School selectedSchool;
 
-    public void selectSchool(final School school) {
-        mSelectedSchool = school;
+    public void updateSelectedSchool(final School school) {
+        selectedSchool = school;
+    }
+
+    public Observable<School> getSelectedSchool() {
+        return Observable.just(selectedSchool);
     }
 
     public Observable<List<School>> getAllSchools() {

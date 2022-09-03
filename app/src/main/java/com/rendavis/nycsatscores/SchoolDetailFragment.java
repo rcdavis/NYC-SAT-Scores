@@ -8,14 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
-import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
-import com.rendavis.nycsatscores.school.School;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -31,15 +25,13 @@ public class SchoolDetailFragment
      */
     public static final String ARG_ITEM_ID = "item_id";
 
-    private School mItem;
-
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             final ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
 
             addDisposable(viewModel.getSchool(clipDataItem.getText().toString())
                     .subscribe(school -> {
-                        mItem = school;
+                        viewModel.updateSelectedSchool(school);
                         updateContent();
                     }));
         }
@@ -63,7 +55,7 @@ public class SchoolDetailFragment
         if (rootView != null)
             rootView.setOnDragListener(dragListener);
 
-        getSelectedSchool();
+        updateContent();
 
         return rootView;
     }
@@ -79,23 +71,15 @@ public class SchoolDetailFragment
     }
 
     private void updateContent() {
-        if (mItem != null) {
-            binding.itemDetail.setText(mItem.getOverview());
-            if (binding.phoneNumber != null)
-                binding.phoneNumber.setText(mItem.getPhoneNumberString());
-            if (binding.toolbarLayout != null)
-                binding.toolbarLayout.setTitle(mItem.getName());
-        }
-    }
-
-    private void getSelectedSchool() {
-        final Bundle args = getArguments();
-        if (args != null && args.containsKey(ARG_ITEM_ID)) {
-            addDisposable(viewModel.getSchool(args.getString(ARG_ITEM_ID))
-                    .subscribe(school -> {
-                        mItem = school;
-                        updateContent();
-                    }));
-        }
+        addDisposable(viewModel.getSelectedSchool()
+                .subscribe(school -> {
+                    if (school != null) {
+                        binding.itemDetail.setText(school.getOverview());
+                        if (binding.phoneNumber != null)
+                            binding.phoneNumber.setText(school.getPhoneNumberString());
+                        if (binding.toolbarLayout != null)
+                            binding.toolbarLayout.setTitle(school.getName());
+                    }
+                }));
     }
 }

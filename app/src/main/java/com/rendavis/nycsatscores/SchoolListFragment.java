@@ -1,27 +1,18 @@
 package com.rendavis.nycsatscores;
 
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rendavis.nycsatscores.databinding.FragmentSchoolListBinding;
-import com.rendavis.nycsatscores.databinding.SchoolListContentBinding;
-import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
 import com.rendavis.nycsatscores.school.School;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items. This fragment
@@ -85,107 +76,12 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         addDisposable(viewModel.getAllSchools()
                 .subscribe(schools -> recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
                     schools,
-                    itemDetailFragmentContainer
+                    itemDetailFragmentContainer,
+                    this::onClickView
                 ))));
     }
 
-    public static class SchoolRecyclerViewAdapter
-            extends RecyclerView.Adapter<SchoolRecyclerViewAdapter.ViewHolder> {
-
-        private final List<School> mValues;
-        private final View mItemDetailFragmentContainer;
-
-        SchoolRecyclerViewAdapter(
-            List<School> items,
-            View itemDetailFragmentContainer
-        ) {
-            mValues = items;
-            mItemDetailFragmentContainer = itemDetailFragmentContainer;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final SchoolListContentBinding binding = SchoolListContentBinding
-                    .inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.schoolNameText.setText(mValues.get(position).getName());
-
-            holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(itemView -> {
-                final School item = (School) itemView.getTag();
-                PlaceholderContent.SCHOOL_REPO.selectSchool(item);
-                final Bundle arguments = new Bundle();
-                arguments.putString(SchoolDetailFragment.ARG_ITEM_ID, item.getId());
-                if (mItemDetailFragmentContainer != null) {
-                    Navigation.findNavController(mItemDetailFragmentContainer)
-                            .navigate(R.id.fragment_item_detail, arguments);
-                } else {
-                    Navigation.findNavController(itemView)
-                            .navigate(R.id.show_item_detail, arguments);
-                }
-            });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                /*
-                 * Context click listener to handle Right click events
-                 * from mice and trackpad input to provide a more native
-                 * experience on larger screen devices
-                 */
-                holder.itemView.setOnContextClickListener(v -> {
-                    final School item = (School) holder.itemView.getTag();
-                    Toast.makeText(
-                            holder.itemView.getContext(),
-                            "Context click of item " + item.getId(),
-                            Toast.LENGTH_LONG
-                    ).show();
-                    return true;
-                });
-            }
-            holder.itemView.setOnLongClickListener(v -> {
-                // Setting the item id as the clip data so that the drop target is able to
-                // identify the id of the content
-                final ClipData.Item clipItem = new ClipData.Item(mValues.get(position).getId());
-                final ClipData dragData = new ClipData(
-                        ((School) v.getTag()).getOverview(),
-                        new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN},
-                        clipItem
-                );
-
-                if (Build.VERSION.SDK_INT >= 24) {
-                    v.startDragAndDrop(
-                            dragData,
-                            new View.DragShadowBuilder(v),
-                            null,
-                            0
-                    );
-                } else {
-                    v.startDrag(
-                            dragData,
-                            new View.DragShadowBuilder(v),
-                            null,
-                            0
-                    );
-                }
-                return true;
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView schoolNameText;
-
-            ViewHolder(SchoolListContentBinding binding) {
-                super(binding.getRoot());
-                schoolNameText = binding.schoolName;
-            }
-        }
+    private void onClickView(final View view, final School school) {
+        viewModel.updateSelectedSchool(school);
     }
 }
