@@ -2,21 +2,18 @@ package com.rendavis.nycsatscores.school;
 
 import android.util.Log;
 
-import com.rendavis.nycsatscores.BuildConfig;
+import com.rendavis.nycsatscores.util.CollectionUtils;
+import com.rendavis.nycsatscores.util.RetrofitUtils;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SchoolRepository {
     private final SchoolLocalDataSource mLocalDataSource = new SchoolLocalDataSource();
-    private final SchoolApi schoolApi = createSchoolApi();
+    private final SchoolApi schoolApi = RetrofitUtils.createSchoolApi();
     private School mSelectedSchool;
 
     public Observable<School> getSchool(final String id) {
@@ -34,7 +31,9 @@ public class SchoolRepository {
                 return cachedSchools;
             }
 
-            final List<School> schools = schoolApi.getAllSchools().blockingFirst();
+            final List<School> schools = schoolApi.getAllSchools()
+                    .map(dtos -> CollectionUtils.mapList(dtos, School::from))
+                    .blockingFirst();
             mLocalDataSource.setSchools(schools);
             Log.d("Schools", "Returning web service schools...");
             return schools;
@@ -50,15 +49,5 @@ public class SchoolRepository {
 
     public void selectSchool(final School school) {
         mSelectedSchool = school;
-    }
-
-    private static SchoolApi createSchoolApi() {
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.SCHOOL_API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(new OkHttpClient.Builder().build())
-                .build();
-        return retrofit.create(SchoolApi.class);
     }
 }

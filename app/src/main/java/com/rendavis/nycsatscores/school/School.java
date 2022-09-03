@@ -1,36 +1,31 @@
 package com.rendavis.nycsatscores.school;
 
-import com.google.gson.annotations.SerializedName;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class School {
-    @SerializedName("dbn")
-    private final String id;
+    private String id;
+    private String name;
+    private String overview;
+    private String phoneNumber;
+    private URL websiteUrl;
+    private Address address;
 
-    @SerializedName("school_name")
-    private final String name;
-
-    @SerializedName("overview_paragraph")
-    private final String overview;
-
-    @SerializedName("location")
-    private final String address;
-
-    @SerializedName("phone_number")
-    private final String phoneNumber;
-
-    @SerializedName("website")
-    private final String websiteUrl;
+    public School() {}
 
     public School(
-        String id, String name, String overview, String address,
+        String id, String name, String overview,
         String phoneNumber, String websiteUrl
     ) {
         this.id = id;
         this.name = name;
         this.overview = overview;
-        this.address = address;
         this.phoneNumber = phoneNumber;
-        this.websiteUrl = websiteUrl;
+        try {
+            this.websiteUrl = new URL(websiteUrl);
+        } catch (final MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getId() {
@@ -45,15 +40,32 @@ public class School {
         return overview;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getWebsiteUrl() {
+    public URL getWebsiteUrl() {
         return websiteUrl;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public static School from(final SchoolDTO dto) {
+        final School school = new School();
+
+        school.id = dto.id;
+        school.name = dto.name;
+        school.overview = dto.overview;
+        school.phoneNumber = dto.phoneNumber;
+        try {
+            school.websiteUrl = new URL(dto.websiteUrl);
+        } catch (final MalformedURLException e) {
+            e.printStackTrace();
+        }
+        school.address = new Address(dto.primaryAddressLine1, dto.city, dto.zip, dto.stateCode);
+
+        return school;
     }
 }
