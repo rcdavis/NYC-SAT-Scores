@@ -1,27 +1,16 @@
 package com.rendavis.nycsatscores;
 
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rendavis.nycsatscores.databinding.FragmentSchoolListBinding;
-import com.rendavis.nycsatscores.databinding.SchoolListContentBinding;
-import com.rendavis.nycsatscores.placeholder.PlaceholderContent;
-
-import java.util.List;
+import com.rendavis.nycsatscores.school.School;
 
 /**
  * A fragment representing a list of Items. This fragment
@@ -31,166 +20,43 @@ import java.util.List;
  * item details. On larger screens, the Navigation controller presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class SchoolListFragment extends Fragment {
-
-    /**
-     * Method to intercept global key events in the
-     * item list fragment to trigger keyboard shortcuts
-     * Currently provides a toast when Ctrl + Z and Ctrl + F
-     * are triggered
-     */
-    ViewCompat.OnUnhandledKeyEventListenerCompat unhandledKeyEventListenerCompat = (v, event) -> {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_Z && event.isCtrlPressed()) {
-            Toast.makeText(
-                    v.getContext(),
-                    "Undo (Ctrl + Z) shortcut triggered",
-                    Toast.LENGTH_LONG
-            ).show();
-            return true;
-        } else if (event.getKeyCode() == KeyEvent.KEYCODE_F && event.isCtrlPressed()) {
-            Toast.makeText(
-                    v.getContext(),
-                    "Find (Ctrl + F) shortcut triggered",
-                    Toast.LENGTH_LONG
-            ).show();
-            return true;
-        }
-        return false;
-    };
-
-    private FragmentSchoolListBinding binding;
+public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSchoolListBinding> {
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentSchoolListBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    Class<SchoolViewModel> getViewModelClass() {
+        return SchoolViewModel.class;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ViewCompat.addOnUnhandledKeyEventListener(view, unhandledKeyEventListenerCompat);
-
-        // Leaving this not using view binding as it relies on if the view is visible the current
-        // layout configuration (layout, layout-sw600dp)
-        setupRecyclerView(binding.itemList, view.findViewById(R.id.item_detail_nav_container));
-    }
-
-    private void setupRecyclerView(
-            RecyclerView recyclerView,
-            View itemDetailFragmentContainer
+    FragmentSchoolListBinding createViewBinding(
+        @NonNull LayoutInflater inflater, ViewGroup container
     ) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(
-                PlaceholderContent.ITEMS,
-                itemDetailFragmentContainer
-        ));
+        return FragmentSchoolListBinding.inflate(inflater, container, false);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    void onInit(Bundle savedInstanceState) {
+        setupRecyclerView(binding.itemList);
     }
 
-    public static class SimpleItemRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+    private void setupRecyclerView(final RecyclerView recyclerView) {
+        final SchoolRecyclerViewAdapter adapter = new SchoolRecyclerViewAdapter();
+        recyclerView.setAdapter(adapter);
 
-        private final List<PlaceholderContent.PlaceholderItem> mValues;
-        private final View mItemDetailFragmentContainer;
+        addDisposable(viewModel.getAllSchools()
+                .subscribe(adapter::setItems));
 
-        SimpleItemRecyclerViewAdapter(List<PlaceholderContent.PlaceholderItem> items,
-                                      View itemDetailFragmentContainer) {
-            mValues = items;
-            mItemDetailFragmentContainer = itemDetailFragmentContainer;
-        }
+        adapter.onViewClicked()
+                .subscribe(clickedView -> onClickView(clickedView.view, clickedView.item));
+    }
 
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            final SchoolListContentBinding binding = SchoolListContentBinding
-                    .inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
-
-            holder.itemView.setTag(mValues.get(position));
-            holder.itemView.setOnClickListener(itemView -> {
-                final PlaceholderContent.PlaceholderItem item =
-                        (PlaceholderContent.PlaceholderItem) itemView.getTag();
-                final Bundle arguments = new Bundle();
-                arguments.putString(SchoolDetailFragment.ARG_ITEM_ID, item.id);
-                if (mItemDetailFragmentContainer != null) {
-                    Navigation.findNavController(mItemDetailFragmentContainer)
-                            .navigate(R.id.fragment_item_detail, arguments);
-                } else {
-                    Navigation.findNavController(itemView).navigate(R.id.show_item_detail, arguments);
-                }
-            });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                /*
-                 * Context click listener to handle Right click events
-                 * from mice and trackpad input to provide a more native
-                 * experience on larger screen devices
-                 */
-                holder.itemView.setOnContextClickListener(v -> {
-                    final PlaceholderContent.PlaceholderItem item =
-                            (PlaceholderContent.PlaceholderItem) holder.itemView.getTag();
-                    Toast.makeText(
-                            holder.itemView.getContext(),
-                            "Context click of item " + item.id,
-                            Toast.LENGTH_LONG
-                    ).show();
-                    return true;
-                });
-            }
-            holder.itemView.setOnLongClickListener(v -> {
-                // Setting the item id as the clip data so that the drop target is able to
-                // identify the id of the content
-                final ClipData.Item clipItem = new ClipData.Item(mValues.get(position).id);
-                final ClipData dragData = new ClipData(
-                        ((PlaceholderContent.PlaceholderItem) v.getTag()).content,
-                        new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN},
-                        clipItem
-                );
-
-                if (Build.VERSION.SDK_INT >= 24) {
-                    v.startDragAndDrop(
-                            dragData,
-                            new View.DragShadowBuilder(v),
-                            null,
-                            0
-                    );
-                } else {
-                    v.startDrag(
-                            dragData,
-                            new View.DragShadowBuilder(v),
-                            null,
-                            0
-                    );
-                }
-                return true;
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
-
-            ViewHolder(SchoolListContentBinding binding) {
-                super(binding.getRoot());
-                mIdView = binding.schoolName;
-                mContentView = binding.content;
-            }
+    private void onClickView(final View view, final School school) {
+        viewModel.updateSelectedSchool(school);
+        if (binding.itemDetailNavContainer != null) {
+            Navigation.findNavController(binding.itemDetailNavContainer)
+                    .navigate(R.id.fragment_item_detail);
+        } else {
+            Navigation.findNavController(view).navigate(R.id.show_item_detail);
         }
     }
 }
