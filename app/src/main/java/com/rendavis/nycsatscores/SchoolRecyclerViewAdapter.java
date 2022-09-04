@@ -28,11 +28,9 @@ public class SchoolRecyclerViewAdapter
     }
 
     @Override
-    public void onBindViewHolder(
-        @NonNull final BaseRecyclerViewAdapter.ViewHolder<SchoolListContentBinding> holder,
-        int position
+    protected void onBindItemToViewHolder(
+        @NonNull ViewHolder<SchoolListContentBinding> holder, School item
     ) {
-        super.onBindViewHolder(holder, position);
-        holder.binding.schoolName.setText(mItems.get(position).getName());
+        holder.binding.setSchool(item);
     }
 }

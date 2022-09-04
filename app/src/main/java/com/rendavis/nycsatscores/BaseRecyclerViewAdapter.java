@@ -42,6 +42,7 @@ public abstract class BaseRecyclerViewAdapter<T, B extends ViewBinding>
     }
 
     protected abstract B createViewBinding(@NonNull ViewGroup parent);
+    protected abstract void onBindItemToViewHolder(@NonNull ViewHolder<B> holder, T item);
 
     @NonNull
     @Override
@@ -57,9 +58,13 @@ public abstract class BaseRecyclerViewAdapter<T, B extends ViewBinding>
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder<B> holder, int position) {
+        final T item = mItems.get(position);
+
         RxView.clicks(holder.itemView)
-                .map(__ -> new ClickedView(holder.itemView, mItems.get(position)))
+                .map(__ -> new ClickedView(holder.itemView, item))
                 .subscribe(mViewClickSubject);
+
+        onBindItemToViewHolder(holder, item);
     }
 
     @Override

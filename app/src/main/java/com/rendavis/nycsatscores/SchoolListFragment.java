@@ -35,9 +35,7 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    void onInit(Bundle savedInstanceState) {
         setupRecyclerView(binding.itemList);
     }
 

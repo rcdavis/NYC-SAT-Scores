@@ -1,10 +1,7 @@
 package com.rendavis.nycsatscores;
 
-import android.content.ClipData;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,39 +17,16 @@ import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
 public class SchoolDetailFragment
         extends BaseFragment<SchoolViewModel, FragmentSchoolDetailBinding> {
 
-    private final View.OnDragListener dragListener = (v, event) -> {
-        if (event.getAction() == DragEvent.ACTION_DROP) {
-            final ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
-
-            addDisposable(viewModel.getSchool(clipDataItem.getText().toString())
-                    .subscribe(school -> {
-                        viewModel.updateSelectedSchool(school);
-                        updateContent();
-                    }));
-        }
-        return true;
-    };
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public SchoolDetailFragment() {
-    }
+    public SchoolDetailFragment() {}
 
     @Override
-    public View onCreateView(
-        @NonNull LayoutInflater inflater,
-        ViewGroup container,
-        Bundle savedInstanceState
-    ) {
-        final View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        if (rootView != null)
-            rootView.setOnDragListener(dragListener);
-
-        updateContent();
-
-        return rootView;
+    void onInit(Bundle savedInstanceState) {
+        addDisposable(viewModel.getSelectedSchool()
+                .subscribe(school -> binding.setSchool(school)));
     }
 
     @Override
@@ -65,17 +39,5 @@ public class SchoolDetailFragment
         @NonNull LayoutInflater inflater, ViewGroup container
     ) {
         return FragmentSchoolDetailBinding.inflate(inflater, container, false);
-    }
-
-    private void updateContent() {
-        addDisposable(viewModel.getSelectedSchool()
-                .subscribe(school -> {
-                    if (school != null) {
-                        binding.itemDetail.setText(school.getOverview());
-                        binding.phoneNumber.setText(school.getPhoneNumberString());
-                        if (binding.toolbarLayout != null)
-                            binding.toolbarLayout.setTitle(school.getName());
-                    }
-                }));
     }
 }

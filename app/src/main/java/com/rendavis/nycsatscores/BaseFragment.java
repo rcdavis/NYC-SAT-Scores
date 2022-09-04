@@ -36,6 +36,13 @@ public abstract class BaseFragment<V extends ViewModel, B extends ViewBinding> e
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        onInit(savedInstanceState);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mDisposables.clear();
@@ -51,4 +58,6 @@ public abstract class BaseFragment<V extends ViewModel, B extends ViewBinding> e
     abstract Class<V> getViewModelClass();
 
     abstract B createViewBinding(@NonNull LayoutInflater inflater, ViewGroup container);
+
+    abstract void onInit(Bundle savedInstanceState);
 }
