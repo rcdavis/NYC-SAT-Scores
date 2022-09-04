@@ -28,7 +28,9 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
     }
 
     @Override
-    FragmentSchoolListBinding getBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
+    FragmentSchoolListBinding createViewBinding(
+        @NonNull LayoutInflater inflater, ViewGroup container
+    ) {
         return FragmentSchoolListBinding.inflate(inflater, container, false);
     }
 
@@ -40,11 +42,14 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
     }
 
     private void setupRecyclerView(final RecyclerView recyclerView) {
+        final SchoolRecyclerViewAdapter adapter = new SchoolRecyclerViewAdapter();
+        recyclerView.setAdapter(adapter);
+
         addDisposable(viewModel.getAllSchools()
-                .subscribe(schools -> recyclerView.setAdapter(new SchoolRecyclerViewAdapter(
-                    schools,
-                    this::onClickView
-                ))));
+                .subscribe(adapter::setItems));
+
+        adapter.onViewClicked()
+                .subscribe(clickedView -> onClickView(clickedView.view, clickedView.item));
     }
 
     private void onClickView(final View view, final School school) {

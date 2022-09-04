@@ -26,11 +26,11 @@ public abstract class BaseFragment<V extends ViewModel, B extends ViewBinding> e
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState
+        @NonNull LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState
     ) {
-        binding = getBinding(inflater, container);
+        binding = createViewBinding(inflater, container);
         viewModel = new ViewModelProvider(requireActivity()).get(getViewModelClass());
         return binding.getRoot();
     }
@@ -50,5 +50,5 @@ public abstract class BaseFragment<V extends ViewModel, B extends ViewBinding> e
 
     abstract Class<V> getViewModelClass();
 
-    abstract B getBinding(@NonNull LayoutInflater inflater, ViewGroup container);
+    abstract B createViewBinding(@NonNull LayoutInflater inflater, ViewGroup container);
 }

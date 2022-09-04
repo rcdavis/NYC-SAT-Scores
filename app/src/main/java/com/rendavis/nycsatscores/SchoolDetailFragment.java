@@ -19,11 +19,6 @@ import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
  */
 public class SchoolDetailFragment
         extends BaseFragment<SchoolViewModel, FragmentSchoolDetailBinding> {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
-    public static final String ARG_ITEM_ID = "item_id";
 
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
@@ -66,7 +61,9 @@ public class SchoolDetailFragment
     }
 
     @Override
-    FragmentSchoolDetailBinding getBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
+    FragmentSchoolDetailBinding createViewBinding(
+        @NonNull LayoutInflater inflater, ViewGroup container
+    ) {
         return FragmentSchoolDetailBinding.inflate(inflater, container, false);
     }
 
@@ -75,8 +72,7 @@ public class SchoolDetailFragment
                 .subscribe(school -> {
                     if (school != null) {
                         binding.itemDetail.setText(school.getOverview());
-                        if (binding.phoneNumber != null)
-                            binding.phoneNumber.setText(school.getPhoneNumberString());
+                        binding.phoneNumber.setText(school.getPhoneNumberString());
                         if (binding.toolbarLayout != null)
                             binding.toolbarLayout.setTitle(school.getName());
                     }
