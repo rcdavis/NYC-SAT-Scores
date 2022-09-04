@@ -1,6 +1,7 @@
 <!-- Adding the same root's ID for view binding as other layout configurations -->
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -21,7 +22,7 @@
 
             <TextView
                 android:id="@+id/phone_number"
-                style="?android:attr/textAppearanceLarge"
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/container_horizontal_margin"
@@ -29,15 +30,29 @@
                 android:paddingEnd="@dimen/container_horizontal_margin"
                 android:paddingBottom="16dp"
                 android:textIsSelectable="true"
-                android:text="@{school.phoneNumberString}"
+                app:text="@{school.phoneNumber}"
                 tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                 tools:text="(123) 456-7890"/>
 
             <TextView
-                android:id="@+id/item_detail"
-                style="?android:attr/textAppearanceLarge"
+                android:id="@+id/address"
+                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingTop="16dp"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:paddingBottom="16dp"
+                android:textIsSelectable="true"
+                app:text="@{school.address}"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+                tools:text="10 East 15th Street,\nManhattan, NY 10003"/>
+
+            <TextView
+                android:id="@+id/item_detail"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingStart="@dimen/container_horizontal_margin"
                 android:paddingTop="16dp"
                 android:paddingEnd="@dimen/container_horizontal_margin"
@@ -46,6 +61,74 @@
                 android:text="@{school.overview}"
                 tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                 tools:text="NYC School Details"/>
+
+            <TextView
+                style="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingTop="16dp"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:paddingBottom="16dp"
+                android:textIsSelectable="true"
+                android:text="@string/title_sat_scores"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"/>
+
+            <TextView
+                android:id="@+id/num_sat_takers"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingTop="16dp"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:paddingBottom="16dp"
+                android:textIsSelectable="true"
+                app:text="@{school.satScores.numSATTestTakers}"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+                tools:text="29"/>
+
+            <TextView
+                android:id="@+id/avg_critical_reading_score"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingTop="16dp"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:paddingBottom="16dp"
+                android:textIsSelectable="true"
+                app:text="@{school.satScores.averageSATCriticalReadingScore}"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+                tools:text="355"/>
+
+            <TextView
+                android:id="@+id/avg_math_score"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingTop="16dp"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:paddingBottom="16dp"
+                android:textIsSelectable="true"
+                app:text="@{school.satScores.averageSATMathScore}"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+                tools:text="404"/>
+
+            <TextView
+                android:id="@+id/avg_writing_score"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingTop="16dp"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:paddingBottom="16dp"
+                android:textIsSelectable="true"
+                app:text="@{school.satScores.averageSATWritingScore}"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
+                tools:text="363"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

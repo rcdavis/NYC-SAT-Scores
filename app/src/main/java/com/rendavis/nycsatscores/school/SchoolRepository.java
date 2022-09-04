@@ -5,6 +5,9 @@ import android.util.Log;
 import com.rendavis.nycsatscores.util.CollectionUtils;
 import com.rendavis.nycsatscores.util.RetrofitUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -14,12 +17,8 @@ import io.reactivex.schedulers.Schedulers;
 public class SchoolRepository {
     private final SchoolLocalDataSource mLocalDataSource = new SchoolLocalDataSource();
     private final SchoolApi schoolApi = RetrofitUtils.createSchoolApi();
-    private School mSelectedSchool;
 
     public Observable<School> getSchool(final String id) {
-        if (mSelectedSchool != null && mSelectedSchool.getId().equals(id))
-            return Observable.just(mSelectedSchool);
-
         return mLocalDataSource.getSchool(id)
                 .onErrorResumeNext(schoolApi.getSchool(id).map(School::from));
     }
@@ -32,9 +31,20 @@ public class SchoolRepository {
                 return cachedSchools;
             }
 
-            final List<School> schools = schoolApi.getAllSchools()
+            final List<School> schools = new ArrayList<>();
+            final List<SchoolDTO> schoolDTOS = schoolApi.getAllSchools().blockingFirst();
+            final List<SchoolSATDTO> satDTOs = schoolApi.getAllSATScores().blockingFirst();
+
+            for (final SchoolSATDTO dto : satDTOs) {
+                for (final SchoolDTO schoolDTO : schoolDTOS) {
+                    if (StringUtils.equalsIgnoreCase(dto.name, schoolDTO.name))
+                        schools.add(School.from(schoolDTO, dto));
+                }
+            }
+
+            /*final List<School> schools = schoolApi.getAllSchools()
                     .map(dtos -> CollectionUtils.mapList(dtos, School::from))
-                    .blockingFirst();
+                    .blockingFirst();*/
             mLocalDataSource.setSchools(schools);
             Log.d("Schools", "Returning web service schools...");
             return schools;
@@ -48,7 +58,8 @@ public class SchoolRepository {
                 .onErrorResumeNext(mLocalDataSource.getAllSchools());*/
     }
 
-    public void selectSchool(final School school) {
-        mSelectedSchool = school;
+    public Observable<List<SATScores>> getSATScores() {
+        return schoolApi.getAllSATScores()
+                .map(dtos -> CollectionUtils.mapList(dtos, SATScores::from));
     }
 }
