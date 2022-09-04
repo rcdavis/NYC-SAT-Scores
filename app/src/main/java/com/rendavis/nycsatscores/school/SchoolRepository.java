@@ -7,7 +7,6 @@ import com.rendavis.nycsatscores.util.RetrofitUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -31,16 +30,12 @@ public class SchoolRepository {
                 return cachedSchools;
             }
 
-            final List<School> schools = new ArrayList<>();
             final List<SchoolDTO> schoolDTOS = schoolApi.getAllSchools().blockingFirst();
             final List<SchoolSATDTO> satDTOs = schoolApi.getAllSATScores().blockingFirst();
 
-            for (final SchoolSATDTO dto : satDTOs) {
-                for (final SchoolDTO schoolDTO : schoolDTOS) {
-                    if (StringUtils.equalsIgnoreCase(dto.name, schoolDTO.name))
-                        schools.add(School.from(schoolDTO, dto));
-                }
-            }
+            final List<School> schools = CollectionUtils.zipLists(schoolDTOS, satDTOs,
+                (schooldto, satdto) -> StringUtils.equalsIgnoreCase(schooldto.name, satdto.name),
+                School::from);
 
             /*final List<School> schools = schoolApi.getAllSchools()
                     .map(dtos -> CollectionUtils.mapList(dtos, School::from))
