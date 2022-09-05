@@ -2,7 +2,6 @@ package com.rendavis.nycsatscores.school;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
 import java.net.MalformedURLException;
@@ -15,6 +14,7 @@ public class School {
     private PhoneNumber phoneNumber;
     private URL websiteUrl;
     private Address address;
+    private SATScores satScores;
 
     public School() {}
 
@@ -56,16 +56,16 @@ public class School {
         return phoneNumber;
     }
 
-    public String getPhoneNumberString() {
-        return PhoneNumberUtil.getInstance().format(phoneNumber, PhoneNumberFormat.NATIONAL);
-    }
-
     public URL getWebsiteUrl() {
         return websiteUrl;
     }
 
     public Address getAddress() {
         return address;
+    }
+
+    public SATScores getSatScores() {
+        return satScores;
     }
 
     public static School from(final SchoolDTO dto) {
@@ -90,6 +90,12 @@ public class School {
 
         school.address = new Address(dto.primaryAddressLine1, dto.city, dto.zip, dto.stateCode);
 
+        return school;
+    }
+
+    public static School from(final SchoolDTO schoolDTO, final SchoolSATDTO satDTO) {
+        final School school = from(schoolDTO);
+        school.satScores = SATScores.from(satDTO);
         return school;
     }
 }

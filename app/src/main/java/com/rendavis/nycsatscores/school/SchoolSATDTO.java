@@ -4,56 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class SchoolSATDTO {
     @SerializedName("dbn")
-    private final String id;
+    public String id;
 
     @SerializedName("school_name")
-    private final String name;
+    public String name;
 
     @SerializedName("num_of_sat_test_takers")
-    private final int numSATTestTakers;
+    public String numSATTestTakers;
 
     @SerializedName("sat_critical_reading_avg_score")
-    private final int averageSATCriticalReadingScore;
+    public String averageSATCriticalReadingScore;
 
     @SerializedName("sat_math_avg_score")
-    private final int averageSATMathScore;
+    public String averageSATMathScore;
 
     @SerializedName("sat_writing_avg_score")
-    private final int averageSATWritingScore;
-
-    public SchoolSATDTO(
-        String id, String name, int numSATTestTakers, int averageSATCriticalReadingScore,
-        int averageSATMathScore, int averageSATWritingScore
-    ) {
-        this.id = id;
-        this.name = name;
-        this.numSATTestTakers = numSATTestTakers;
-        this.averageSATCriticalReadingScore = averageSATCriticalReadingScore;
-        this.averageSATMathScore = averageSATMathScore;
-        this.averageSATWritingScore = averageSATWritingScore;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getNumSATTestTakers() {
-        return numSATTestTakers;
-    }
-
-    public int getAverageSATCriticalReadingScore() {
-        return averageSATCriticalReadingScore;
-    }
-
-    public int getAverageSATMathScore() {
-        return averageSATMathScore;
-    }
-
-    public int getAverageSATWritingScore() {
-        return averageSATWritingScore;
-    }
+    public String averageSATWritingScore;
 }

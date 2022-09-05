@@ -29,9 +29,7 @@ android {
     }
     buildFeatures {
         viewBinding true
-    }
-    dataBinding {
-        enabled = true
+        dataBinding true
     }
 }
 
@@ -55,6 +53,7 @@ dependencies {
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.12.54'
 
     implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-collections4:4.4'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
