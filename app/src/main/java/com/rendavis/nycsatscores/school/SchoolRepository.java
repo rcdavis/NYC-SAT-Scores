@@ -15,6 +15,8 @@ public class SchoolRepository {
     private final SchoolLocalDataSource mLocalDataSource = new SchoolLocalDataSource();
     private final SchoolApi schoolApi = RetrofitUtils.createSchoolApi();
 
+    public SchoolRepository() {}
+
     public Observable<School> getSchool(final String id) {
         return mLocalDataSource.getSchool(id)
                 .onErrorResumeNext(schoolApi.getSchool(id).map(School::from));

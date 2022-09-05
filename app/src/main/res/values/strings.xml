@@ -5,4 +5,10 @@
     <string name="title_school_list">NYC Schools</string>
     <string name="title_school_detail">School Details</string>
     <string name="title_sat_scores">SAT Scores</string>
+
+    <!-- Detail SAT strings -->
+    <string name="sat_num_test_takers">Number of Test Takers: %d</string>
+    <string name="sat_avg_critical_reading_score">Critical Reading Avg. Score: %d</string>
+    <string name="sat_avg_math_score">Math Avg. Score: %d</string>
+    <string name="sat_avg_writing_score">Writing Avg. Score: %d</string>
 </resources>

@@ -118,7 +118,7 @@
                     android:paddingEnd="@dimen/container_horizontal_margin"
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
-                    app:text="@{school.satScores.numSATTestTakers}"
+                    android:text="@{@string/sat_num_test_takers(school.satScores.numSATTestTakers)}"
                     tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="29"/>
 
@@ -132,7 +132,7 @@
                     android:paddingEnd="@dimen/container_horizontal_margin"
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
-                    app:text="@{school.satScores.averageSATCriticalReadingScore}"
+                    android:text="@{@string/sat_avg_critical_reading_score(school.satScores.averageSATCriticalReadingScore)}"
                     tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="355"/>
 
@@ -146,7 +146,7 @@
                     android:paddingEnd="@dimen/container_horizontal_margin"
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
-                    app:text="@{school.satScores.averageSATMathScore}"
+                    android:text="@{@string/sat_avg_math_score(school.satScores.averageSATMathScore)}"
                     tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="404"/>
 
@@ -160,7 +160,7 @@
                     android:paddingEnd="@dimen/container_horizontal_margin"
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
-                    app:text="@{school.satScores.averageSATWritingScore}"
+                    android:text="@{@string/sat_avg_writing_score(school.satScores.averageSATWritingScore)}"
                     tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="363"/>
 
