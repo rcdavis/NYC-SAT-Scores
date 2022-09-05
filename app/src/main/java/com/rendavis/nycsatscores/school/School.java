@@ -34,7 +34,7 @@ public class School {
         }
 
         try {
-            this.websiteUrl = new URL(websiteUrl);
+            this.websiteUrl = new URL("https", websiteUrl, "");
         } catch (final MalformedURLException e) {
             e.printStackTrace();
         }
@@ -83,7 +83,7 @@ public class School {
         }
 
         try {
-            school.websiteUrl = new URL(dto.websiteUrl);
+            school.websiteUrl = new URL("https", dto.websiteUrl, "");
         } catch (final MalformedURLException e) {
             e.printStackTrace();
         }
