@@ -23,6 +23,9 @@ public class SchoolLocalDataSource {
     }
 
     public Observable<List<School>> getAllSchools() {
+        if (mSchools.isEmpty())
+            return Observable.error(new IllegalStateException("Couldn't get stored schools"));
+
         return Observable.just(mSchools);
     }
 

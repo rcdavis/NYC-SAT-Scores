@@ -1,7 +1,5 @@
 package com.rendavis.nycsatscores.school;
 
-import android.util.Log;
-
 import com.rendavis.nycsatscores.util.CollectionUtils;
 import com.rendavis.nycsatscores.util.RetrofitUtils;
 
@@ -23,38 +21,29 @@ public class SchoolRepository {
     }
 
     public Observable<List<School>> getAllSchools() {
-        return Observable.fromCallable(() -> {
-            final List<School> cachedSchools = mLocalDataSource.getAllSchools().blockingFirst();
-            if (!cachedSchools.isEmpty()) {
-                Log.d("Schools", "Returning cached schools...");
-                return cachedSchools;
-            }
-
-            final List<SchoolDTO> schoolDTOS = schoolApi.getAllSchools().blockingFirst();
-            final List<SchoolSATDTO> satDTOs = schoolApi.getAllSATScores().blockingFirst();
-
-            final List<School> schools = CollectionUtils.zipLists(schoolDTOS, satDTOs,
-                (schooldto, satdto) -> StringUtils.equalsIgnoreCase(schooldto.name, satdto.name),
-                School::from);
-
-            /*final List<School> schools = schoolApi.getAllSchools()
-                    .map(dtos -> CollectionUtils.mapList(dtos, School::from))
-                    .blockingFirst();*/
-            mLocalDataSource.setSchools(schools);
-            Log.d("Schools", "Returning web service schools...");
-            return schools;
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread());
-
-        /*return schoolApi.getAllSchools()
+        return mLocalDataSource.getAllSchools()
+                .onErrorResumeNext(
+                    Observable.zip(
+                        schoolApi.getAllSchools(),
+                        schoolApi.getAllSATScores(),
+                        this::zipDTOLists
+                    )
+                    .doOnNext(mLocalDataSource::setSchools)
+                )
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorResumeNext(mLocalDataSource.getAllSchools());*/
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<List<SATScores>> getSATScores() {
         return schoolApi.getAllSATScores()
                 .map(dtos -> CollectionUtils.mapList(dtos, SATScores::from));
+    }
+
+    private List<School> zipDTOLists(
+        final List<SchoolDTO> schoolDTOs, final List<SchoolSATDTO> satDTOs
+    ) {
+        return CollectionUtils.zipLists(schoolDTOs, satDTOs,
+                (schooldto, satdto) -> StringUtils.equalsIgnoreCase(schooldto.name, satdto.name),
+                School::from);
     }
 }
