@@ -30,7 +30,8 @@
                 app:title="@{school.name}"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:toolbarId="@+id/toolbar">
+                app:toolbarId="@+id/toolbar"
+                tools:title="Clinton School Writers &amp; Artists, M.S. 260">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/detail_toolbar"
@@ -52,7 +53,19 @@
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment">
+
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@string/title_school_phone_number"/>
 
                 <TextView
                     android:id="@+id/phone_number"
@@ -65,8 +78,18 @@
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     app:text="@{school.phoneNumber}"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="(123) 456-7890"/>
+
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@string/title_school_address"/>
 
                 <TextView
                     android:id="@+id/address"
@@ -79,8 +102,18 @@
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     app:text="@{school.address}"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="10 East 15th Street,\nManhattan, NY 10003"/>
+
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@string/title_school_overview"/>
 
                 <TextView
                     android:id="@+id/item_detail"
@@ -93,8 +126,7 @@
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     android:text="@{school.overview}"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                    tools:text="NYC School Details"/>
+                    tools:text="@string/tools_school_overview_detail"/>
 
                 <TextView
                     style="?android:attr/textAppearanceLarge"
@@ -105,8 +137,7 @@
                     android:paddingEnd="@dimen/container_horizontal_margin"
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
-                    android:text="@string/title_sat_scores"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"/>
+                    android:text="@string/title_sat_scores"/>
 
                 <TextView
                     android:id="@+id/num_sat_takers"
@@ -119,7 +150,6 @@
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     android:text="@{@string/sat_num_test_takers(school.satScores.numSATTestTakers)}"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="29"/>
 
                 <TextView
@@ -133,7 +163,6 @@
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     android:text="@{@string/sat_avg_critical_reading_score(school.satScores.averageSATCriticalReadingScore)}"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="355"/>
 
                 <TextView
@@ -147,7 +176,6 @@
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     android:text="@{@string/sat_avg_math_score(school.satScores.averageSATMathScore)}"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="404"/>
 
                 <TextView
@@ -161,7 +189,6 @@
                     android:paddingBottom="16dp"
                     android:textIsSelectable="true"
                     android:text="@{@string/sat_avg_writing_score(school.satScores.averageSATWritingScore)}"
-                    tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
                     tools:text="363"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>

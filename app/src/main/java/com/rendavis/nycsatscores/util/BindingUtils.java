@@ -16,12 +16,14 @@ public class BindingUtils {
 
     @BindingAdapter("text")
     public static void setText(final TextView textView, final Address address) {
-        textView.setText(address.toString());
+        if (address != null)
+            textView.setText(address.toString());
     }
 
     @BindingAdapter("text")
     public static void setText(final TextView textView, final PhoneNumber phoneNumber) {
-        textView.setText(PhoneNumberUtil.getInstance()
+        if (phoneNumber != null)
+            textView.setText(PhoneNumberUtil.getInstance()
                 .format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL));
     }
 }

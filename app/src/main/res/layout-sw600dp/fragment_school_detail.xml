@@ -15,122 +15,183 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="@dimen/app_bar_height"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <TextView
-                android:id="@+id/phone_number"
-                style="?android:attr/textAppearanceMedium"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:title="@{school.name}"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@+id/toolbar"
+                tools:title="Clinton School Writers &amp; Artists, M.S. 260">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/detail_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/item_detail_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                app:text="@{school.phoneNumber}"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                tools:text="(123) 456-7890"/>
+                android:orientation="vertical"
+                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment">
 
-            <TextView
-                android:id="@+id/address"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                app:text="@{school.address}"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                tools:text="10 East 15th Street,\nManhattan, NY 10003"/>
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@string/title_school_phone_number"/>
 
-            <TextView
-                android:id="@+id/item_detail"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                android:text="@{school.overview}"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                tools:text="NYC School Details"/>
+                <TextView
+                    android:id="@+id/phone_number"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    app:text="@{school.phoneNumber}"
+                    tools:text="(123) 456-7890"/>
 
-            <TextView
-                style="?android:attr/textAppearanceLarge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                android:text="@string/title_sat_scores"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"/>
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@string/title_school_address"/>
 
-            <TextView
-                android:id="@+id/num_sat_takers"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                app:text="@{school.satScores.numSATTestTakers}"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                tools:text="29"/>
+                <TextView
+                    android:id="@+id/address"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    app:text="@{school.address}"
+                    tools:text="10 East 15th Street,\nManhattan, NY 10003"/>
 
-            <TextView
-                android:id="@+id/avg_critical_reading_score"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                app:text="@{school.satScores.averageSATCriticalReadingScore}"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                tools:text="355"/>
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@string/title_school_overview"/>
 
-            <TextView
-                android:id="@+id/avg_math_score"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                app:text="@{school.satScores.averageSATMathScore}"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                tools:text="404"/>
+                <TextView
+                    android:id="@+id/item_detail"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@{school.overview}"
+                    tools:text="@string/tools_school_overview_detail"/>
 
-            <TextView
-                android:id="@+id/avg_writing_score"
-                style="?android:attr/textAppearanceMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                app:text="@{school.satScores.averageSATWritingScore}"
-                tools:context="com.rendavis.nycsatscores.SchoolDetailFragment"
-                tools:text="363"/>
+                <TextView
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@string/title_sat_scores"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <TextView
+                    android:id="@+id/num_sat_takers"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@{@string/sat_num_test_takers(school.satScores.numSATTestTakers)}"
+                    tools:text="29"/>
+
+                <TextView
+                    android:id="@+id/avg_critical_reading_score"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@{@string/sat_avg_critical_reading_score(school.satScores.averageSATCriticalReadingScore)}"
+                    tools:text="355"/>
+
+                <TextView
+                    android:id="@+id/avg_math_score"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@{@string/sat_avg_math_score(school.satScores.averageSATMathScore)}"
+                    tools:text="404"/>
+
+                <TextView
+                    android:id="@+id/avg_writing_score"
+                    style="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:text="@{@string/sat_avg_writing_score(school.satScores.averageSATWritingScore)}"
+                    tools:text="363"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

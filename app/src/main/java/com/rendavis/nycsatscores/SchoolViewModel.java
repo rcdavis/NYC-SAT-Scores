@@ -19,6 +19,9 @@ public class SchoolViewModel extends ViewModel {
     }
 
     public Observable<School> getSelectedSchool() {
+        if (selectedSchool == null)
+            return Observable.empty();
+
         return Observable.just(selectedSchool);
     }
 
