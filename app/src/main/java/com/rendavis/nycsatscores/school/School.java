@@ -16,11 +16,11 @@ public class School {
     private Address address;
     private SATScores satScores;
 
-    public School() {}
-
+    private School() {}
     public School(
         String id, String name, String overview,
-        String phoneNumber, String websiteUrl
+        String phoneNumber, String websiteUrl,
+        Address address, SATScores satScores
     ) {
         this.id = id;
         this.name = name;
@@ -38,6 +38,9 @@ public class School {
         } catch (final MalformedURLException e) {
             e.printStackTrace();
         }
+
+        this.address = address;
+        this.satScores = satScores;
     }
 
     public String getId() {

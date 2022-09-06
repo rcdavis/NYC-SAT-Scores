@@ -45,7 +45,7 @@ public class SchoolRepository {
         final List<SchoolDTO> schoolDTOs, final List<SchoolSATDTO> satDTOs
     ) {
         return CollectionUtils.zipLists(schoolDTOs, satDTOs,
-                (schooldto, satdto) -> StringUtils.equalsIgnoreCase(schooldto.name, satdto.name),
+                (schooldto, satdto) -> StringUtils.equalsIgnoreCase(schooldto.id, satdto.id),
                 School::from);
     }
 }

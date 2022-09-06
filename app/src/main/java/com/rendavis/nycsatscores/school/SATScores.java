@@ -10,6 +10,19 @@ public class SATScores {
     private int averageSATMathScore;
     private int averageSATWritingScore;
 
+    private SATScores() {}
+    public SATScores(
+        String id, String name, int numSATTestTakers, int averageSATCriticalReadingScore,
+        int averageSATMathScore, int averageSATWritingScore
+    ) {
+        this.id = id;
+        this.name = name;
+        this.numSATTestTakers = numSATTestTakers;
+        this.averageSATCriticalReadingScore = averageSATCriticalReadingScore;
+        this.averageSATMathScore = averageSATMathScore;
+        this.averageSATWritingScore = averageSATWritingScore;
+    }
+
     public String getId() {
         return id;
     }
