@@ -7,7 +7,7 @@ import com.rendavis.nycsatscores.school.SchoolRepository;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 public class SchoolViewModel extends ViewModel {
     private final SchoolRepository schoolRepository = new SchoolRepository();

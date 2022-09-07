@@ -2,16 +2,20 @@ package com.rendavis.nycsatscores.util;
 
 import androidx.annotation.NonNull;
 
-import org.apache.commons.collections4.Transformer;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.functions.BiFunction;
+import io.reactivex.rxjava3.functions.BiPredicate;
+import io.reactivex.rxjava3.functions.Function;
+
 public class CollectionUtils {
-    public static <T, R> List<R> mapList(final List<T> list, final Transformer<T, R> func) {
+    public static <T, R> List<R> mapList(
+        final List<T> list, final Function<T, R> func) throws Throwable
+    {
         final List<R> result = new ArrayList<>();
         for (final T entry : list)
-            result.add(func.transform(entry));
+            result.add(func.apply(entry));
         return result;
     }
 
@@ -22,23 +26,23 @@ public class CollectionUtils {
      * @param second The second list
      * @param predicate Func to test entries within lists
      * @param transform Func to zip entries together
-     * @param <T> Type of first list
-     * @param <U> Type of second list
+     * @param <T1> Type of first list
+     * @param <T2> Type of second list
      * @param <R> Type of resulting list
      * @return Zipped list
      */
     @NonNull
-    public static <T, U, R> List<R> zipLists(
-        @NonNull final List<T> first,
-        @NonNull final List<U> second,
-        @NonNull final BiPredicate<T, U> predicate,
-        @NonNull final BiTransform<T, U, R> transform
-    ) {
+    public static <T1, T2, R> List<R> zipLists(
+        @NonNull final List<T1> first,
+        @NonNull final List<T2> second,
+        @NonNull final BiPredicate<T1, T2> predicate,
+        @NonNull final BiFunction<T1, T2, R> transform
+    ) throws Throwable {
         final List<R> result = new ArrayList<>();
-        for (final T ef : first) {
-            for (final U es : second) {
-                if (predicate.evaluate(ef, es)) {
-                    result.add(transform.evaluate(ef, es));
+        for (final T1 e1 : first) {
+            for (final T2 e2 : second) {
+                if (predicate.test(e1, e2)) {
+                    result.add(transform.apply(e1, e2));
                 }
             }
         }
