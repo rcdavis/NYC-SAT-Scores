@@ -6,6 +6,7 @@ import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 public class School {
     private String id;
@@ -69,6 +70,28 @@ public class School {
 
     public SATScores getSatScores() {
         return satScores;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        final School school = (School) o;
+        return Objects.equals(id, school.id) && Objects.equals(name, school.name) &&
+                Objects.equals(overview, school.overview) &&
+                Objects.equals(phoneNumber, school.phoneNumber) &&
+                Objects.equals(websiteUrl, school.websiteUrl) &&
+                Objects.equals(address, school.address) &&
+                Objects.equals(satScores, school.satScores);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, overview, phoneNumber, websiteUrl, address, satScores);
     }
 
     public static School from(final SchoolDTO dto) {
