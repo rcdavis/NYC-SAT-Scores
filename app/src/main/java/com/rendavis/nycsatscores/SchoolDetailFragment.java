@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.rendavis.nycsatscores.databinding.FragmentSchoolDetailBinding;
+import com.rendavis.nycsatscores.school.School;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -26,6 +27,10 @@ public class SchoolDetailFragment
     @Override
     void onInit(Bundle savedInstanceState) {
         addDisposable(viewModel.getSelectedSchool()
+                .onErrorReturn(e -> {
+                    e.printStackTrace();
+                    return createBlankSchool();
+                })
                 .subscribe(school -> binding.setSchool(school)));
     }
 
@@ -39,5 +44,17 @@ public class SchoolDetailFragment
         @NonNull LayoutInflater inflater, ViewGroup container
     ) {
         return FragmentSchoolDetailBinding.inflate(inflater, container, false);
+    }
+
+    private School createBlankSchool() {
+        return new School(
+            "NA",
+            "N/A",
+            "N/A",
+            "N/A",
+            "N/A",
+            null,
+            null
+        );
     }
 }

@@ -7,7 +7,9 @@ import com.rendavis.nycsatscores.school.SchoolRepository;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SchoolViewModel extends ViewModel {
     private final SchoolRepository schoolRepository = new SchoolRepository();
@@ -20,16 +22,14 @@ public class SchoolViewModel extends ViewModel {
 
     public Observable<School> getSelectedSchool() {
         if (selectedSchool == null)
-            return Observable.empty();
+            return Observable.error(new IllegalStateException("No School Selected"));
 
         return Observable.just(selectedSchool);
     }
 
     public Observable<List<School>> getAllSchools() {
-        return schoolRepository.getAllSchools();
-    }
-
-    public Observable<School> getSchool(final String id) {
-        return schoolRepository.getSchool(id);
+        return schoolRepository.getAllSchools()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

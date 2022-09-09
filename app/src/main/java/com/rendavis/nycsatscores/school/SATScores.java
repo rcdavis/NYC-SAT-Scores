@@ -2,6 +2,8 @@ package com.rendavis.nycsatscores.school;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.util.Objects;
+
 public class SATScores {
     private String id;
     private String name;
@@ -45,6 +47,28 @@ public class SATScores {
 
     public int getAverageSATWritingScore() {
         return averageSATWritingScore;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        final SATScores satScores = (SATScores) o;
+        return numSATTestTakers == satScores.numSATTestTakers &&
+                averageSATCriticalReadingScore == satScores.averageSATCriticalReadingScore &&
+                averageSATMathScore == satScores.averageSATMathScore &&
+                averageSATWritingScore == satScores.averageSATWritingScore &&
+                Objects.equals(id, satScores.id) && Objects.equals(name, satScores.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, numSATTestTakers, averageSATCriticalReadingScore,
+                averageSATMathScore, averageSATWritingScore);
     }
 
     public static SATScores from(final SchoolSATDTO dto) {

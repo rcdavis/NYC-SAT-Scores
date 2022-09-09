@@ -13,16 +13,17 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SchoolRepository {
-    private final SchoolLocalDataSource mLocalDataSource = new SchoolLocalDataSource();
-    private final SchoolApi schoolApi = RetrofitUtils.createSchoolApi();
+    private final SchoolLocalDataSource mLocalDataSource;
+    private final SchoolApi schoolApi;
 
-    public SchoolRepository() {}
+    public SchoolRepository() {
+        this.mLocalDataSource = new SchoolLocalDataSource();
+        this.schoolApi = RetrofitUtils.createSchoolApi();
+    }
 
-    public Observable<School> getSchool(final String id) {
-        return mLocalDataSource.getSchool(id)
-                .onErrorResumeWith(schoolApi.getSchool(id).map(School::from))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public SchoolRepository(SchoolLocalDataSource localDataSource, SchoolApi schoolApi) {
+        this.mLocalDataSource = localDataSource;
+        this.schoolApi = schoolApi;
     }
 
     public Observable<List<School>> getAllSchools() {
@@ -34,9 +35,7 @@ public class SchoolRepository {
                             this::zipDTOLists
                         )
                         .doOnNext(mLocalDataSource::setSchools)
-                )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                );
     }
 
     private List<School> zipDTOLists(
